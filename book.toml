@@ -1,0 +1,5 @@
+[book]
+authors = ["Dmitry Golubets"]
+multilingual = false
+src = "src"
+title = "Rust Hints"
