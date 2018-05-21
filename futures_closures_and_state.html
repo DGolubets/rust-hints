@@ -1,0 +1,293 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Futures, closures and state - Rust Hints</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="_FontAwesome/css/font-awesome.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+
+    </head>
+    <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="about.html">About</a></li><li><a href="futures_closures_and_state.html" class="active"><strong aria-hidden="true">1.</strong> Futures, closures and state</a></li><li><a href="interior_mutability.html"><strong aria-hidden="true">2.</strong> Interior mutability</a></li><li><a href="self_referential_structs.html"><strong aria-hidden="true">3.</strong> Self-referential structs</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">Rust Hints</h1> 
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="futures_closures_and_state.html#futures-closures-and-state" id="futures-closures-and-state"><h1>Futures, closures and state</h1></a>
+<a class="header" href="futures_closures_and_state.html#the-task" id="the-task"><h2>The task</h2></a>
+<p>Let's say we are writing an asynchronous application.
+We may come up with a design like this.</p>
+<pre><code class="language-Rust">struct App {
+    counter: i32 // in real world we'll have many useful fields here instead
+}
+
+impl App {
+    fn new() -&gt; App {
+        unimplemented!()
+    }
+
+    fn start&lt;'a&gt;(&amp;'a mut self) -&gt; impl Future&lt;Item=i32, Error=()&gt; + 'a {
+        unimplemented!()
+    }
+}
+
+fn main() {
+    // just start our app on Tokio Core
+    let mut core = Core::new().unwrap();
+    let mut app = App::new();
+    let f = app.start();
+    core.run(f).unwrap();
+}
+</code></pre>
+<a class="header" href="futures_closures_and_state.html#the-problem" id="the-problem"><h2>The problem</h2></a>
+<p>A naive implementation of ```start`` fails however.</p>
+<pre><code class="language-Rust">impl App {
+    fn start&lt;'a&gt;(&amp;'a mut self) -&gt; impl Future&lt;Item=i32, Error=()&gt; + 'a {
+        self.counter = 0;
+        futures::finished(0)
+            .map(|x| x + self.counter)
+            .map(|x| x + self.counter)
+    }
+}
+</code></pre>
+<p>The compiler is not happy:</p>
+<pre><code>error[E0373]: closure may outlive the current function, but it borrows `self`, which is owned by the current function
+  --&gt; src/main.rs:17:18
+   |
+17 |             .map(|x| x + self.counter)
+   |                  ^^^     ---- `self` is borrowed here
+   |                  |
+   |                  may outlive borrowed value `self`
+help: to force the closure to take ownership of `self` (and any other referenced variables), use the `move` keyword
+   |
+17 |             .map(move |x| x + self.counter)
+   |                  ^^^^^^^^
+</code></pre>
+<p>Closures are essentially anonymous structures generated by compiler, holding a reference to used variables. If we want to return a closure from a function, we must follow the advice given by the compiler.</p>
+<pre><code class="language-Rust">impl App {
+    fn start&lt;'a&gt;(&amp;'a mut self) -&gt; impl Future&lt;Item=i32, Error=()&gt; + 'a {
+        self.counter = 0;
+        futures::finished(0)
+            .map(move |x| x + self.counter)
+            .map(move |x| x + self.counter)
+    }
+}
+</code></pre>
+<p>However we get another error:</p>
+<pre><code>  --&gt; src/main.rs:18:31
+   |
+17 |             .map(move |x| x + self.counter)
+   |                  -------- value moved (into closure) here
+18 |             .map(move |x| x + self.counter)
+   |                               ^^^^ value captured here after move
+   |
+   = note: move occurs because `self` has type `&amp;'a mut App`, which does not implement the `Copy` trait
+</code></pre>
+<p>The most important hint is the last line. Rust has two simple <a href="https://doc.rust-lang.org/book/second-edition/ch04-02-references-and-borrowing.html#the-rules-of-references">rules</a> of borrowing. Basically, mutable reference doesn't allow us to have any other references to the object at the same time. Hence we cannot copy it or move twice to different closures.</p>
+<a class="header" href="futures_closures_and_state.html#the-solution" id="the-solution"><h2>The solution</h2></a>
+<p>But, if we don't actually modify the state in the closures - we don't need mutable reference. So let's change our code to:</p>
+<pre><code class="language-Rust">impl App {
+    fn start&lt;'a&gt;(&amp;'a mut self) -&gt; impl Future&lt;Item=i32, Error=()&gt; + 'a {
+        self.init();
+        self.start_work()
+    }
+
+    fn init&lt;'a&gt;(&amp;'a mut self) {
+        self.counter = 0;
+    }
+
+    fn start_work&lt;'a&gt;(&amp;'a self) -&gt; impl Future&lt;Item=i32, Error=()&gt; + 'a {
+        futures::finished(0)
+            .map(move |x| x + self.counter)
+            .map(move |x| x + self.counter)
+    }
+}
+</code></pre>
+<p>Now it's working!</p>
+<a class="header" href="futures_closures_and_state.html#whats-next" id="whats-next"><h2>What's next?</h2></a>
+<p>What if we actually need to modify state in the closures?
+Read <a href="./interior_mutability.html">next hint</a>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="about.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="interior_mutability.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="about.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="interior_mutability.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+
+        
+        <script src="searchindex.js" type="text/javascript" charset="utf-8"></script>
+        
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+    </body>
+</html>

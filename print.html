@@ -1,0 +1,448 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Rust Hints</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="_FontAwesome/css/font-awesome.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+
+    </head>
+    <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="about.html">About</a></li><li><a href="futures_closures_and_state.html"><strong aria-hidden="true">1.</strong> Futures, closures and state</a></li><li><a href="interior_mutability.html"><strong aria-hidden="true">2.</strong> Interior mutability</a></li><li><a href="self_referential_structs.html"><strong aria-hidden="true">3.</strong> Self-referential structs</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">Rust Hints</h1> 
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="print.html#about" id="about"><h1>About</h1></a>
+<p>A collection of Rust develpment patterns and tricks.</p>
+<a class="header" href="print.html#futures-closures-and-state" id="futures-closures-and-state"><h1>Futures, closures and state</h1></a>
+<a class="header" href="print.html#the-task" id="the-task"><h2>The task</h2></a>
+<p>Let's say we are writing an asynchronous application.
+We may come up with a design like this.</p>
+<pre><code class="language-Rust">struct App {
+    counter: i32 // in real world we'll have many useful fields here instead
+}
+
+impl App {
+    fn new() -&gt; App {
+        unimplemented!()
+    }
+
+    fn start&lt;'a&gt;(&amp;'a mut self) -&gt; impl Future&lt;Item=i32, Error=()&gt; + 'a {
+        unimplemented!()
+    }
+}
+
+fn main() {
+    // just start our app on Tokio Core
+    let mut core = Core::new().unwrap();
+    let mut app = App::new();
+    let f = app.start();
+    core.run(f).unwrap();
+}
+</code></pre>
+<a class="header" href="print.html#the-problem" id="the-problem"><h2>The problem</h2></a>
+<p>A naive implementation of ```start`` fails however.</p>
+<pre><code class="language-Rust">impl App {
+    fn start&lt;'a&gt;(&amp;'a mut self) -&gt; impl Future&lt;Item=i32, Error=()&gt; + 'a {
+        self.counter = 0;
+        futures::finished(0)
+            .map(|x| x + self.counter)
+            .map(|x| x + self.counter)
+    }
+}
+</code></pre>
+<p>The compiler is not happy:</p>
+<pre><code>error[E0373]: closure may outlive the current function, but it borrows `self`, which is owned by the current function
+  --&gt; src/main.rs:17:18
+   |
+17 |             .map(|x| x + self.counter)
+   |                  ^^^     ---- `self` is borrowed here
+   |                  |
+   |                  may outlive borrowed value `self`
+help: to force the closure to take ownership of `self` (and any other referenced variables), use the `move` keyword
+   |
+17 |             .map(move |x| x + self.counter)
+   |                  ^^^^^^^^
+</code></pre>
+<p>Closures are essentially anonymous structures generated by compiler, holding a reference to used variables. If we want to return a closure from a function, we must follow the advice given by the compiler.</p>
+<pre><code class="language-Rust">impl App {
+    fn start&lt;'a&gt;(&amp;'a mut self) -&gt; impl Future&lt;Item=i32, Error=()&gt; + 'a {
+        self.counter = 0;
+        futures::finished(0)
+            .map(move |x| x + self.counter)
+            .map(move |x| x + self.counter)
+    }
+}
+</code></pre>
+<p>However we get another error:</p>
+<pre><code>  --&gt; src/main.rs:18:31
+   |
+17 |             .map(move |x| x + self.counter)
+   |                  -------- value moved (into closure) here
+18 |             .map(move |x| x + self.counter)
+   |                               ^^^^ value captured here after move
+   |
+   = note: move occurs because `self` has type `&amp;'a mut App`, which does not implement the `Copy` trait
+</code></pre>
+<p>The most important hint is the last line. Rust has two simple <a href="https://doc.rust-lang.org/book/second-edition/ch04-02-references-and-borrowing.html#the-rules-of-references">rules</a> of borrowing. Basically, mutable reference doesn't allow us to have any other references to the object at the same time. Hence we cannot copy it or move twice to different closures.</p>
+<a class="header" href="print.html#the-solution" id="the-solution"><h2>The solution</h2></a>
+<p>But, if we don't actually modify the state in the closures - we don't need mutable reference. So let's change our code to:</p>
+<pre><code class="language-Rust">impl App {
+    fn start&lt;'a&gt;(&amp;'a mut self) -&gt; impl Future&lt;Item=i32, Error=()&gt; + 'a {
+        self.init();
+        self.start_work()
+    }
+
+    fn init&lt;'a&gt;(&amp;'a mut self) {
+        self.counter = 0;
+    }
+
+    fn start_work&lt;'a&gt;(&amp;'a self) -&gt; impl Future&lt;Item=i32, Error=()&gt; + 'a {
+        futures::finished(0)
+            .map(move |x| x + self.counter)
+            .map(move |x| x + self.counter)
+    }
+}
+</code></pre>
+<p>Now it's working!</p>
+<a class="header" href="print.html#whats-next" id="whats-next"><h2>What's next?</h2></a>
+<p>What if we actually need to modify state in the closures?
+Read <a href="./interior_mutability.html">next hint</a>.</p>
+<a class="header" href="print.html#interior-mutability" id="interior-mutability"><h1>Interior mutability</h1></a>
+<p>There is a <a href="https://doc.rust-lang.org/book/second-edition/ch15-05-interior-mutability.html">whole page</a> in the official Rust book about the subject.
+But the hint is that in many cases, it may be very useful or even neccessary to design application components using interior mutability.
+Like if we had to modify state in the closures in the previous example, we could get away with something like that:</p>
+<pre><code class="language-Rust">
+struct App {
+    counter: Counter
+}
+
+struct Counter {
+    state: Cell&lt;i32&gt;
+}
+
+impl Counter {
+    fn new() -&gt; Counter {
+        Counter {
+            state: Cell::new(0)
+        }
+    }
+
+    fn inc_and_get(&amp;self) -&gt; i32 {
+        let value = self.state.get();
+        self.state.set(value + 1);
+        value
+    }
+}
+
+impl App {
+    fn start&lt;'a&gt;(&amp;'a mut self) -&gt; impl Future&lt;Item=i32, Error=()&gt; + 'a {
+        self.init();
+        self.start_work()
+    }
+
+    fn init&lt;'a&gt;(&amp;'a mut self) {
+        self.counter = Counter::new();
+    }
+
+    fn start_work&lt;'a&gt;(&amp;'a self) -&gt; impl Future&lt;Item=i32, Error=()&gt; + 'a {
+        futures::finished(0)
+            .map(move |x| x + self.counter.inc_and_get())
+            .map(move |x| x + self.counter.inc_and_get())
+    }
+}
+</code></pre>
+<p>This allow us to keep immutable references and easily move them into closures.
+However once we have multiple threads - we should also take care of synchronization too.</p>
+<a class="header" href="print.html#self-referential-structs" id="self-referential-structs"><h1>Self-referential structs</h1></a>
+<p>Here is another problem that may often stand in the way.</p>
+<p>Imagine a Kafka library (like <a href="https://github.com/fede1024/rust-rdkafka">rdkafka</a>), that has an interface similar to:</p>
+<pre><code class="language-Rust">struct KafkaConsumer;
+
+struct MessageStream&lt;'a&gt; {
+    consumer: &amp;'a KafkaConsumer
+}
+
+impl KafkaConsumer {
+    fn new() -&gt; KafkaConsumer {
+        KafkaConsumer {}
+    }
+
+    fn stream(&amp;self, topic: &amp;str) -&gt; MessageStream {
+        MessageStream { consumer: self }
+    }
+}
+</code></pre>
+<p>Now let's say you need to start multiple stream dynamically - you don't know how many beforehand. These streams will read different topics therefore they need their own consumers.</p>
+<pre><code class="language-Rust">fn create_stream(topic: &amp;str) -&gt; MessageStream {
+    let consumer = KafkaConsumer::new();
+    consumer.stream(topic)
+}
+</code></pre>
+<p>This obviously doesn't work:</p>
+<pre><code>error[E0597]: `consumer` does not live long enough
+  --&gt; src/main.rs:29:5
+   |
+29 |     consumer.stream(topic)
+   |     ^^^^^^^^ borrowed value does not live long enough
+30 | }
+   | - borrowed value only lives until here
+</code></pre>
+<p>But what if we returned consumer together with the stream?</p>
+<pre><code class="language-Rust">struct KafkaStream {
+    consumer: KafkaConsumer,
+    stream: MessageStream&lt;'static&gt;
+}
+
+fn create_stream(topic: &amp;str) -&gt; KafkaStream {
+    let consumer = KafkaConsumer::new();
+    let stream = consumer.stream(topic);
+    KafkaStream {
+        consumer,
+        stream
+    }
+}
+</code></pre>
+<p>Still no luck!</p>
+<pre><code>error[E0597]: `consumer` does not live long enough
+  --&gt; src/main.rs:39:18
+   |
+39 |     let stream = consumer.stream(topic);
+   |                  ^^^^^^^^ borrowed value does not live long enough
+...
+44 | }
+   | - borrowed value only lives until here
+   |
+   = note: borrowed value must be valid for the static lifetime...
+</code></pre>
+<p>Maybe Rust compiler is just dumb?</p>
+<pre><code class="language-Rust">struct KafkaStream {
+    consumer: KafkaConsumer,
+    stream: MessageStream&lt;'static&gt;
+}
+
+fn create_stream(topic: &amp;str) -&gt; KafkaStream {
+    let consumer = KafkaConsumer::new();
+    let consumer_ref: &amp;'static KafkaConsumer = unsafe { mem::transmute(&amp;consumer) };
+    let stream = consumer_ref.stream(topic);
+    KafkaStream {
+        consumer,
+        stream
+    }
+}
+</code></pre>
+<p>This compiles! However this is really NOT SAFE. Turns out it can actually CRASH!
+The reason is we did a dumb thing here: we forced Rust to think that consumer reference is valid forever, but the actual object can be moved when function returnes (it's address will change)!</p>
+<p>So how do we make it actually safe? By placing the object on heap:</p>
+<pre><code class="language-Rust">struct KafkaStream {
+    consumer: Box&lt;KafkaConsumer&gt;,
+    stream: MessageStream&lt;'static&gt;
+}
+
+fn create_stream(topic: &amp;str) -&gt; KafkaStream {
+    let consumer = KafkaConsumer::new();
+    let consumer = Box::new(consumer);
+    let consumer_ref: &amp;'static KafkaConsumer = unsafe { mem::transmute(consumer.as_ref()) };
+    let stream = consumer_ref.stream(topic);
+    KafkaStream {
+        consumer,
+        stream
+    }
+}
+</code></pre>
+<p>That's almost perfect!
+Except.. it's not. We forgot one importnant detail: drop order.</p>
+<p>We need our consumer to be disposed after the stream.
+Luckily Rust struct drop order has been <a href="https://github.com/rust-lang/rfcs/blob/master/text/1857-stabilize-drop-order.md">stabilized</a> recently, so we can just change the order of fields in our struct.
+This is the final solution:</p>
+<pre><code class="language-Rust">struct KafkaStream {
+    stream: MessageStream&lt;'static&gt;,
+    consumer: Box&lt;KafkaConsumer&gt;
+}
+
+fn create_stream(topic: &amp;str) -&gt; KafkaStream {
+    let consumer = KafkaConsumer::new();
+    let consumer = Box::new(consumer);
+    let consumer_ref: &amp;'static KafkaConsumer = unsafe { mem::transmute(consumer.as_ref()) };
+    let stream = consumer_ref.stream(topic);
+    KafkaStream {
+        consumer,
+        stream
+    }
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function() {
+                window.print();
+            })
+        </script>
+        
+
+        
+
+        
+        <script src="searchindex.js" type="text/javascript" charset="utf-8"></script>
+        
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+    </body>
+</html>
